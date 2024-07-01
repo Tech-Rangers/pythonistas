@@ -48,7 +48,7 @@ def exibir_todos_os_animais():
     width = 48
     fill="="
     message0=" Todos animais "
-    print(f"| {message0:{fill}{align}{width}} |")
+    print(f"|{color_yellow} {message0:{fill}{align}{width}} \033[0m|")
 
     # headers
     width = 10
@@ -57,7 +57,7 @@ def exibir_todos_os_animais():
     message3 = 'Idade'
     message4 = 'Peso(kg)'
     message5 = 'Dono'
-    print(f'|{message1:{align}{width}}{message2:{align}{width}}{message3:{align}{width}}{message4:{align}{width}}{message5:{align}{width}}|')
+    print(f'{color_yellow}|{message1:{align}{width}}{message2:{align}{width}}{message3:{align}{width}}{message4:{align}{width}}{message5:{align}{width}}|\033[0m')
 
     for animal in animais:
         nome_pet = animal[0]
