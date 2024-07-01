@@ -1,16 +1,27 @@
+from typing import TypedDict
+
+class PetDict(TypedDict):
+    nome: str
+    especie: str
+    peso: float
+    idade: float
+    dono: str
+
+
+
 animais = [
-    ['Murphy', 'Gato', 6, 5.5, 'Juliana'],
-    ['Bernardo', 'Cão', 6, '10', 'Marcela'],
-    ['Anabele', 'Peixe', 6, '1', 'Marcela'],
-    ['Hórus', 'Gato', 2, '10', 'Leiticia'],
-    ['Pipoca', 'Peixe', 6, '10', 'Juliana'],
-    ['Kronos', 'Tartaruga', 4, '3', 'Carlos'],
-    ['Poseidon', 'Cão', 4, '5', 'Gabriel'],
-    ['Fumaça', 'Gato', 2, '4', 'Juliana'],
-    ['Zeus', 'Gato', 6, 9.0, 'Gabriel'],
-    ['Koda', 'Cão', 6, 19.0, 'Carlos'],
-    ['Fumaça', 'Hamster', 1, 0.5, 'Savanna'],
-    ['Hórus', 'Calopsita', 7, 0.1, 'Carlos'],
+    PetDict({'nome': 'Murphy', 'especie':'Gato', 'idade': 6, 'peso': 5.5, 'dono': 'Juliana'}),
+    PetDict(nome='Bernardo', especie='Cão', idade=6, peso=10, dono='Marcela'),
+    PetDict(nome='Anabele', especie='Peixe', idade=6, peso=1, dono='Marcela'),
+    PetDict(nome='Hórus', especie='Gato', idade=2, peso=10, dono='Leiticia'),
+    PetDict(nome='Pipoca', especie='Peixe', idade=6, peso=10, dono='Juliana'),
+    PetDict(nome='Kronos', especie='Tartaruga', idade=4, peso=3, dono='Carlos'),
+    PetDict(nome='Poseidon', especie='Cão', idade=4, peso=5, dono='Gabriel'),
+    PetDict(nome='Fumaça', especie='Gato', idade=2, peso=4, dono='Juliana'),
+    PetDict(nome='Zeus', especie='Gato', idade=6, peso=9.0, dono='Gabriel'),
+    PetDict(nome='Koda', especie='Cão', idade=6, peso=19.0, dono='Carlos'),
+    PetDict(nome='Fumaça', especie='Hamster', idade=1, peso=0.5, dono='Savanna'),
+    PetDict(nome='Hórus', especie='Calopsita', idade=7, peso=0.1, dono='Carlos'),
 ]
 
 color_green = "\33[32m"
@@ -19,6 +30,7 @@ color_red= "\33[31m"
 color_blue= "\33[36m"
 style = "\33[1m"
 
+
 # 1
 def adicionar_animal():
     nome_pet = str(input('Qual o nome do seu pet? '))
@@ -26,7 +38,7 @@ def adicionar_animal():
     idade = int(input('Qual idade do seu pet? '))
     peso = str(input('Qual o peso do seu pet(em kg)? '))
     nome_dono = str(input('Qual é o seu nome(nome do dono)? '))
-    pet = [nome_pet, espécie, idade, peso, nome_dono]
+    pet = PetDict(nome=nome_pet, dono=nome_dono, especie=espécie, idade=idade, peso=peso)
     print(f'{color_green}O novo animal cadastrado é: \033[0m {pet} \n')
     animais.append(pet)
 
@@ -35,7 +47,7 @@ def adicionar_animal():
 def remover_animal():
     nome_pet = str(input('Qual o nome do seu pet a ser removido? '))
     for index, animal in enumerate(animais):
-        if nome_pet in animal:
+        if nome_pet == animal['nome']:
             print(f'{color_red} O animal a ser removido é:  \033[0m {animal}')
             animais.remove(animal)
             return
@@ -60,19 +72,14 @@ def exibir_todos_os_animais():
     print(f'|{message1:{align}{width}}{message2:{align}{width}}{message3:{align}{width}}{message4:{align}{width}}{message5:{align}{width}}|')
 
     for animal in animais:
-        nome_pet = animal[0]
-        especie = animal[1]
-        idade = animal[2]
-        peso = animal[3]
-        dono = animal[4]
-        print(f'|{nome_pet:{align}{width}}{especie:{align}{width}}{idade:{align}{width}}{peso:{align}{width}}{dono:{align}{width}}|')
+        print(f'|{animal["nome"]:{align}{width}}{animal['especie']:{align}{width}}{animal['idade']:{align}{width}}{animal["peso"]:{align}{width}}{animal['dono']:{align}{width}}|')
     print('\n\n')
 
 # 4
 def buscar_animal_pelo_nome():
     nome_pet = input(" => Qual o nome do animal que deseja procurar?  ")
     for animal in animais:
-        if nome_pet in animal[0]:
+        if nome_pet == animal['nome']:
             print(f"{color_yellow} O pet {nome_pet} possui os dados:\033[0m  {animal}\n")
             return
 
@@ -85,7 +92,7 @@ def buscar_animais_do_dono():
 
     animais_encontrados = []
     for index, animal in enumerate(animais):
-        if  nome_dono in animal[4]:
+        if  nome_dono in animal['dono']:
             animais_encontrados.append(animal)
 
     if animais_encontrados:
@@ -101,7 +108,7 @@ def atualizar_animal():
     pet_atualizado = None
 
     for animal in animais:
-        if nome_pet in animal:
+        if nome_pet in animal['nome']:
             encontrou_algum_animal = True
             resposta = input(f'O animal é: {animal}, este é o animal que gostaria de atualizar? (Sim ou Não): ')
 
@@ -110,7 +117,7 @@ def atualizar_animal():
                 nova_idade = int(input('Qual a idade do seu pet?'))
                 novo_peso = float(input('Qual o peso do seu pet?'))
 
-                pet_atualizado = [animal[0], nova_especie, nova_idade, novo_peso, animal[4]]
+                pet_atualizado = PetDict(nome=animal['nome'], especie=nova_especie, idade=nova_idade, peso=novo_peso, dono=animal['dono'])
 
     if not encontrou_algum_animal:
         print('Não foi encontrado nenhum animal com este nome\n')
@@ -153,6 +160,14 @@ def iniciar_loop_principal():
                 print("Por favor digite uma opção valida!!!\n")
                 continue
 
+            # TODO lição de casa
+            # muda essa cadeia de ifs para um dicionário de comandos
+            # ex:
+            # comandos = {
+            #   0: sair,
+            #   1: adicional_animal
+            # }
+
             if int(user_input) == 0:
                sair()
             if int(user_input) == 1:
@@ -171,6 +186,7 @@ def iniciar_loop_principal():
         except (KeyboardInterrupt, EOFError):
             sair()
         except (KeyError):
+            print("Cai nesse erro", KeyError)
             print("Comando não reconhecido. Digite 'help' ou 'ajuda' para listar as ações disponíveis")
 
 
