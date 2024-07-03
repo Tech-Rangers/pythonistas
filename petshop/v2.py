@@ -62,6 +62,8 @@ def exibir_todos_os_animais():
     message0=" Todos animais "
     print(f"| {message0:{fill}{align}{width}} |")
 
+    animais_ordernados = sorted(animais, key=lambda animal: animal['nome'])
+
     # headers
     width = 10
     message1 = 'Nome Pet'
@@ -71,7 +73,7 @@ def exibir_todos_os_animais():
     message5 = 'Dono'
     print(f'|{message1:{align}{width}}{message2:{align}{width}}{message3:{align}{width}}{message4:{align}{width}}{message5:{align}{width}}|')
 
-    for animal in animais:
+    for animal in animais_ordernados:
         print(f'|{animal["nome"]:{align}{width}}{animal['especie']:{align}{width}}{animal['idade']:{align}{width}}{animal["peso"]:{align}{width}}{animal['dono']:{align}{width}}|')
     print('\n\n')
 
@@ -151,42 +153,29 @@ def iniciar_loop_principal():
     print("-=- Bem vindo ao Petshop -=- ")
     mostrar_menu()
 
+    comandos = {
+        "0": sair,
+        "1": adicionar_animal,
+        "2": remover_animal,
+        "3": exibir_todos_os_animais,
+        "4": buscar_animal_pelo_nome,
+        "5": buscar_animais_do_dono,
+        "6": atualizar_animal,
+    }
+
     user_input = None
     while True:
         try:
             user_input = input("Como posso ajudar?\n")
 
-            if not user_input.isnumeric() or int(user_input) not in range(7):
+            if user_input not in comandos:
                 print("Por favor digite uma opção valida!!!\n")
                 continue
 
-            # TODO lição de casa
-            # muda essa cadeia de ifs para um dicionário de comandos
-            # ex:
-            # comandos = {
-            #   0: sair,
-            #   1: adicional_animal
-            # }
-
-            if int(user_input) == 0:
-               sair()
-            if int(user_input) == 1:
-                adicionar_animal()
-            if int(user_input) == 2:
-                remover_animal()
-            if int(user_input) == 3:
-                exibir_todos_os_animais()
-            if int(user_input) == 4:
-                buscar_animal_pelo_nome()
-            if int(user_input) == 5:
-                buscar_animais_do_dono()
-            if int(user_input) == 6:
-                atualizar_animal()
-
+            comandos[user_input]()
         except (KeyboardInterrupt, EOFError):
             sair()
         except (KeyError):
-            print("Cai nesse erro", KeyError)
             print("Comando não reconhecido. Digite 'help' ou 'ajuda' para listar as ações disponíveis")
 
 

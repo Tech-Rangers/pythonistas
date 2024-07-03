@@ -38,7 +38,7 @@ def adicionar_animal():
     idade = int(input('Qual idade do seu pet? '))
     peso = str(input('Qual o peso do seu pet(em kg)? '))
     nome_dono = str(input('Qual é o seu nome(nome do dono)? '))
-    pet = PetDict(nome=nome_pet, dono=nome_dono, especie=espécie, idade=idade, peso=peso)
+    pet = PetDict(nome=nome_pet.capitalize(), dono=nome_dono, especie=espécie, idade=idade, peso=peso)
     print(f'{color_green}O novo animal cadastrado é: \033[0m {pet} \n')
     animais.append(pet)
 
@@ -70,21 +70,21 @@ def exibir_todos_os_animais():
     message4 = 'Peso(kg)'
     message5 = 'Dono'
     print(f'|{message1:{align}{width}}{message2:{align}{width}}{message3:{align}{width}}{message4:{align}{width}}{message5:{align}{width}}|')
-    
+
     animais_em_ordem = []
-    letras_alfabeto = ["A", "B", "C", "D", "E", "F","G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "X", "Z"] 
-    
+    letras_alfabeto = ["A", "B", "C", "D", "E", "F","G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "Y", "X", "Z"]
+
     for letra in letras_alfabeto:
         for animal in animais:
             if letra in animal['nome'][0]:
                 if animal not in animais_em_ordem:
                     animais_em_ordem.append(animal)
                     print(f'|{animal["nome"]:{align}{width}}{animal['especie']:{align}{width}}{animal['idade']:{align}{width}}{animal["peso"]:{align}{width}}{animal['dono']:{align}{width}}|')
-    
-    
+
+
     print("Todos animais FORA DE ordem")
-    
-    
+
+
 
     for animal in animais:
         print(f'|{animal["nome"]:{align}{width}}{animal['especie']:{align}{width}}{animal['idade']:{align}{width}}{animal["peso"]:{align}{width}}{animal['dono']:{align}{width}}|')
@@ -166,47 +166,29 @@ def iniciar_loop_principal():
     print("-=- Bem vindo ao Petshop -=- ")
     mostrar_menu()
 
-    user_input = None
     comandos = {
-    0: sair,
-    1: adicionar_animal,
-    2: remover_animal,
-    3: exibir_todos_os_animais,
-    4: buscar_animal_pelo_nome,
-    5: buscar_animais_do_dono,
-    6: atualizar_animal,
+        "0": sair,
+        "1": adicionar_animal,
+        "2": remover_animal,
+        "3": exibir_todos_os_animais,
+        "4": buscar_animal_pelo_nome,
+        "5": buscar_animais_do_dono,
+        "6": atualizar_animal,
     }
+
+    user_input = None
     while True:
         try:
             user_input = input("Como posso ajudar?\n")
-            for comando in comandos: 
-                if user_input == comando: 
-                    exec
-                    {comandos(comando)}
-            if not user_input.isnumeric() or int(user_input) not in range(7):
+
+            if user_input not in comandos:
                 print("Por favor digite uma opção valida!!!\n")
                 continue
-            
-            # TODO lição de casa
-            # muda essa cadeia de ifs para um dicionário de comandos
-            # ex:
-            # comandos = {
-            #   0: sair,
-            #   1: adicional_animal
-            #   2: removel_animal
-            #   3: exibir_todos_os_animais
-            #   4: buscar_animal_pelo_nome
-            #   5: buscar_animais_do_dono
-            #   6: atualizar_animal
-            # }
-            # if 
 
-
-
+            comandos[user_input]()
         except (KeyboardInterrupt, EOFError):
             sair()
         except (KeyError):
-            print("Cai nesse erro", KeyError)
             print("Comando não reconhecido. Digite 'help' ou 'ajuda' para listar as ações disponíveis")
 
 
