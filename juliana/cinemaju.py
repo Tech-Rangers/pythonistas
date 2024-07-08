@@ -1,5 +1,6 @@
 from typing import TypedDict
 import random
+import copy
 
 color_green = "\33[32m"
 color_yellow= "\33[33m"
@@ -20,129 +21,132 @@ print('\n\n')
 
 
 pessoas = [
-    ["Ana", "0"],              # solteira -> type("Ana") == str
+    "Ana",              # solteira -> type("Ana") == str
     ["Bruno", "Carla"], # casal    -> type(["Bruno", "Carla"]) == list
-    ["Daniel",  "0"],
+    "Daniel",
     ["Eduardo", "Fernanda"],
-    ["Gabriela","0"],
-    ["Helena","0"],
+    "Gabriela",
+    "Helena",
     ["Igor", "Juliana"],
-    ["Lucas","0"],
+    "Lucas",
     ["Mariana", "Nicolas"],
-    ["Olivia","0"],
-    ["Pedro","0"],
+    "Olivia",
+    "Pedro",
     ["Quentin", "Rafaela"],
-    ["Sofia","0"],
+    "Sofia",
     ["Thiago", "Ursula"],
-    ["Vanessa","0"],
-    ["William","0"],
+    "Vanessa",
+    "William",
     ["Xavier", "Yara"],
-    ["Zoe","0"],
+    "Zoe",
     ["Arthur", "Beatriz"],
-    ["Camila","0"],
+    "Camila",
+    ["Davi", "Elena"],
+    "Felipe",
+    ["Gustavo", "Heloisa"],
+    "Isabel",
+    ["João", "Karina"],
+    "Lara",
+    ["Miguel", "Natália"],
+    "Otávio",
+    ["Paulo", "Renata"]
 ]
-
-    
-
-sala_planeta_macacos = [
-    {'A1': 0, 'A2': 0, 'A3': 0},
-    {'B1': 0, 'B2': 0, 'B3': 0},
-    {'C1': 0, 'C2': 0, 'C3': 0},
-]
-sala_divertidamente = [
-    {'A1': 0, 'A2': 0, 'A3': 0},
-    {'B1': 0, 'B2': 0, 'B3': 0},
-    {'C1': 0, 'C2': 0, 'C3': 0},
-]
-sala_garfield = [
-    {'A1': 0, 'A2': 0, 'A3': 0},
-    {'B1': 0, 'B2': 0, 'B3': 0},
-    {'C1': 0, 'C2': 0, 'C3': 0},
-]
-sala_furiosa = [
-    {'A1': 0, 'A2': 0, 'A3': 0},
-    {'B1': 0, 'B2': 0, 'B3': 0},
-    {'C1': 0, 'C2': 0, 'C3': 0},
-]
-sala_badboys = [
-    {'A1': 0, 'A2': 0, 'A3': 0},
-    {'B1': 0, 'B2': 0, 'B3': 0},
-    {'C1': 0, 'C2': 0, 'C3': 0},
-]
-
-class filmdict(TypedDict):
-    nome_filme: str
-    sala_filme: str
 
 filmes = [
-    filmdict(nome_filme = 'Planeta dos Macacos: O Reinado', sala_filme = sala_planeta_macacos),
-    filmdict(nome_filme = 'Divertidamente', sala_filme = sala_divertidamente),
-    filmdict(nome_filme = "Garfield", sala_filme = sala_garfield),
-    filmdict(nome_filme = "Furiosa", sala_filme = sala_furiosa),
-    filmdict(nome_filme = "Bad Boys", sala_filme = sala_badboys)
+    "Planeta dos Macacos: O Reinado",
+    "Divertidamente 2",
+    "Garfield",
+    "Furiosa",
+    "Bad Boys",
 ]
 
 
+sala_vazia = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+]
 
-def comprar_ingressos():
-    saldo = 0
-    compras_realizadas = []
-    for pessoa in pessoas:
-        filme_escolhido = filmes [random.randrange(len(filmes))]
-        sala_filme = filme_escolhido['sala_filme']
-        if pessoa[1] == "0":
-            print(f"A pessoa {pessoa[0]} escolheu o filme {filme_escolhido['nome_filme']}")
-            saldo = saldo + 10
-            compras_realizadas.append(pessoa[0])
-        else:
-            print(f"As pessoas {pessoa[0]} e {pessoa[1]} escolheram o filme {filme_escolhido['nome_filme']}")
-            compras_realizadas.append(pessoa)
-            saldo = saldo + 20
-    print('\n')
-    print(sala_filme[0])
-    print(sala_filme[1])
-    print(sala_filme[2])
-    print('\n')
-    print(f"As pessoas que compraram hoje de hoje foram: {compras_realizadas}\n")
-    total_compras = saldo / 10
-    print(f"O total de compras de hoje foram: {total_compras}\n")   
-    print(f" {color_green} Saldo final do cinema é de R$ {saldo:.2f}\033[0m")
+compras_realizadas = []
+saldo_final = 0
+# Funções Auxiliares/ debug
+def print_salas(salas):
+    salas["Bad Boys"][0][0] = 1
+    print(" === salas passando filme === ")
+    for sala in salas:
+        print(sala, salas[sala])
+
+    print('\n\n')
+
+def converter_numero_do_assento(i, j):
+    fileiras = ["A", "B", "C"]
+    numeros_do_assento = ["1","2","3"]
+    return fileiras[i] + numeros_do_assento[j]
 
 
+# Funções principais
 
-def escolher_acentos_individual():
-    for pessoa in pessoas:
-        if pessoa[1] == '0':
-            filme_escolhido = filmes [random.randrange(len(filmes))]
-            sala_filme = filme_escolhido['sala_filme']
-            print(f"A pessoa {pessoa[0]} escolheu o filme: {filme_escolhido['nome_filme']}")
-            print('Painel de disponibilidade da sala: \n')
-            print(sala_filme[0])
-            print(sala_filme[1])
-            print(sala_filme[2])
-            print('\n')
+def escolher_filme():
+    return random.choice(filmes)
+
+def comprar_ingresso_solo(pessoa, filme):
+    print(f'Compra de ingresso solo: {pessoa}')
+    for letra, fileira in enumerate(salas_passando_filme[filme]):
+        for numero, assento in enumerate(fileira):
             
-
-            for lugar in range(len(sala_filme)):
-                    print(lugar)
-                    
-                    fileira = sala_filme [random.randrange(len(sala_filme[lugar]))]
-                    print(fileira)
-
-                    if lugar in fileira:
-                        print(f"O lugar escolhido pela {pessoa[0]} foi {lugar}")
-                        lugar = 1
-                        print(lugar)
-                    
-        else: 
-            print(f"A pessoa {pessoa} precisa de 2 lugares")
-    print('Painel de disponibilidade da sala: \n')
-    print(sala_filme[0])
-    print(sala_filme[1])
-    print(sala_filme[2])
-escolher_acentos_individual()
-
-#def escolher_acentos_casal(): 
+            if assento == 0:
+                salas_passando_filme[filme][letra][numero] = 1
+                print(f"Filme {filme} - Assento comprado {converter_numero_do_assento(letra, numero)} ")
+                compras_realizadas.append(pessoa)
+                #print(f"As compras realizadas são: {compras_realizadas} para o filme {filme}")
+                return
+                            
+def exibir_sala():
+    
+    print(f'{filme}\n')
+    print(salas_passando_filme[0])
+    print(salas_passando_filme[0])
+    print(salas_passando_filme[0])
+    print('\n')
+    print(f"As pessoas que compraram foram: {compras_realizadas}\n")
 
 
-#def exibir_acentos():
+
+
+def comprar_ingresso_casal(casal):
+    print(f'Compra de ingresso casal: {casal}')
+    for letra, fileira in enumerate(salas_passando_filme[filme]):
+        for numero, assento in enumerate(fileira):
+            if numero == len(fileira) - 1:
+                continue
+            
+            assento_lado = fileira [numero + 1]
+            
+            if assento == 0 and assento_lado == 0:
+                salas_passando_filme[filme][letra][numero] = 1
+                salas_passando_filme[filme][letra][numero + 1] = 1
+                print(f"Filme {filme} - Assentos comprados {converter_numero_do_assento(letra, numero)} e {converter_numero_do_assento(letra, numero + 1)} ")
+                compras_realizadas.append(casal)
+                #print(f"As compras realizadas são: {compras_realizadas} para o filme {filme}")
+                return
+    print(f"Não foi possivel realizar esta compra para o filme: {filme}")
+
+# INICIO DO PROGRAMA
+
+salas_passando_filme = {}
+
+for filme in filmes:
+    salas_passando_filme[filme] = copy.deepcopy(sala_vazia)
+
+print(" === compra de ingresso === ")
+for p in pessoas:
+    filme_escolhido = escolher_filme()
+    if type(p) == str:
+        comprar_ingresso_solo(pessoa=p, filme=filme_escolhido)
+    if type(p) == list:
+        comprar_ingresso_casal(p)
+
+print_salas(salas_passando_filme)
+
+
+
