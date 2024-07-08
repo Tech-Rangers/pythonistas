@@ -71,10 +71,14 @@ compras_realizadas = []
 saldo_final = 0
 # Funções Auxiliares/ debug
 def print_salas(salas):
-    salas["Bad Boys"][0][0] = 1
-    print(" === salas passando filme === ")
+    print(" === salas passando filme === \n")
     for sala in salas:
-        print(sala, salas[sala])
+        print(f" === {sala} === ")
+        print('      1, 2, 3       ')
+        print(f"A:   {salas[sala][0]}    ")
+        print(f"B:   {salas[sala][1]}    ")
+        print(f"C:   {salas[sala][2]}    ")
+        print('')
 
     print('\n\n')
 
@@ -91,41 +95,32 @@ def escolher_filme():
 
 def comprar_ingresso_solo(pessoa, filme):
     print(f'Compra de ingresso solo: {pessoa}')
-    for letra, fileira in enumerate(salas_passando_filme[filme]):
-        for numero, assento in enumerate(fileira):
-            
-            if assento == 0:
-                salas_passando_filme[filme][letra][numero] = 1
-                print(f"Filme {filme} - Assento comprado {converter_numero_do_assento(letra, numero)} ")
-                compras_realizadas.append(pessoa)
-                #print(f"As compras realizadas são: {compras_realizadas} para o filme {filme}")
-                return
+    i = random.choice([0,1,2])
+    j = random.choice([0,1,2])
+    assento = salas_passando_filme[filme][i][j]
+           
+    if assento == 0:
+        salas_passando_filme[filme][i][j] = 1
+        print(f"Filme {filme} - Assento comprado {converter_numero_do_assento(i, j)} ")
+        compras_realizadas.append(pessoa)
+        #print(f"As compras realizadas são: {compras_realizadas} para o filme {filme}")
+        return
+    print(f"Não foi possivel realizar esta compra para o filme: {filme}")
                             
-def exibir_sala():
-    
-    print(f'{filme}\n')
-    print(salas_passando_filme[0])
-    print(salas_passando_filme[0])
-    print(salas_passando_filme[0])
-    print('\n')
-    print(f"As pessoas que compraram foram: {compras_realizadas}\n")
-
-
-
 
 def comprar_ingresso_casal(casal):
     print(f'Compra de ingresso casal: {casal}')
-    for letra, fileira in enumerate(salas_passando_filme[filme]):
-        for numero, assento in enumerate(fileira):
-            if numero == len(fileira) - 1:
+    for i, fileira in enumerate(salas_passando_filme[filme]):
+        for j, assento in enumerate(fileira):
+            if j == len(fileira) - 1:
                 continue
             
-            assento_lado = fileira [numero + 1]
+            assento_lado = fileira [j + 1]
             
             if assento == 0 and assento_lado == 0:
-                salas_passando_filme[filme][letra][numero] = 1
-                salas_passando_filme[filme][letra][numero + 1] = 1
-                print(f"Filme {filme} - Assentos comprados {converter_numero_do_assento(letra, numero)} e {converter_numero_do_assento(letra, numero + 1)} ")
+                salas_passando_filme[filme][i][j] = 1
+                salas_passando_filme[filme][i][j + 1] = 1
+                print(f"Filme {filme} - Assentos comprados {converter_numero_do_assento(i, j)} e {converter_numero_do_assento(i, j + 1)} ")
                 compras_realizadas.append(casal)
                 #print(f"As compras realizadas são: {compras_realizadas} para o filme {filme}")
                 return
